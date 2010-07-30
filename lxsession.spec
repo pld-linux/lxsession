@@ -7,8 +7,11 @@ Group:		X11/Applications
 Source0:	http://downloads.sourceforge.net/lxde/%{name}-%{version}.tar.gz
 # Source0-md5:	9d433e1219eac07862c0d725ab58444f
 URL:		http://www.lxde.org/
+BuildRequires:	dbus-devel
+BuildRequires:	gettext-devel
 BuildRequires:	gtk+2-devel >= 2:2.12.0
-BuildRequires:	menu-cache-devel
+BuildRequires:	intltool
+BuildRequires:	pkgconfig
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
