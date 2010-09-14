@@ -6,7 +6,7 @@ License:	GPL v2
 Group:		X11/Applications
 Source0:	http://downloads.sourceforge.net/lxde/%{name}-%{version}.tar.gz
 # Source0-md5:	9d433e1219eac07862c0d725ab58444f
-URL:		http://www.lxde.org/
+URL:		http://wiki.lxde.org/en/LXSession
 BuildRequires:	dbus-devel
 BuildRequires:	gettext-devel
 BuildRequires:	gtk+2-devel >= 2:2.12.0
@@ -15,8 +15,12 @@ BuildRequires:	pkgconfig
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
-LXSession is the default session manager of LXDE. (LXDE: Lightweight
-X11 Desktop Environment) http://lxde.org/
+LXSession is the default session manager of LXDE.
+
+LXSession automatically starts a set of applications and sets up a
+working desktop environment. Moreover, the session manager is able to
+remember the applications in use when a user logs out and to restart
+them the next time the user logs in.
 
 %prep
 %setup -q
