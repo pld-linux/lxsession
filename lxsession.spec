@@ -1,11 +1,11 @@
 Summary:	Default session manager for LXDE
 Name:		lxsession
-Version:	0.4.4
+Version:	0.4.5
 Release:	1
 License:	GPL v2
 Group:		X11/Applications
 Source0:	http://downloads.sourceforge.net/lxde/%{name}-%{version}.tar.gz
-# Source0-md5:	9d433e1219eac07862c0d725ab58444f
+# Source0-md5:	d5cd0cb733748191b2c7371c9efda155
 URL:		http://wiki.lxde.org/en/LXSession
 BuildRequires:	dbus-devel
 BuildRequires:	gettext-devel
