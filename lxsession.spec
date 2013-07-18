@@ -9,19 +9,25 @@
 
 Summary:	Default session manager for LXDE
 Name:		lxsession
-Version:	0.4.6.1
-Release:	2
+Version:	0.4.9.2
+Release:	1
 License:	GPL v2
 Group:		X11/Applications
 Source0:	http://downloads.sourceforge.net/lxde/%{name}-%{version}.tar.gz
-# Source0-md5:	e456b64c5ab3652a4dec661ec706dc6e
+# Source0-md5:	bc3eb71936dbdf813e9ac2f00ab948f0
 URL:		http://wiki.lxde.org/en/LXSession
 BuildRequires:	dbus-devel
+BuildRequires:	dbus-glib-devel
 BuildRequires:	gettext-devel
+BuildRequires:	glib2-devel
 %{?with_gtk2:BuildRequires:	gtk+2-devel >= 2:2.12.0}
 %{?with_gtk3:BuildRequires:	gtk+3-devel}
 BuildRequires:	intltool
+BuildRequires:	libgee0.6-devel
 BuildRequires:	pkgconfig
+BuildRequires:	polkit-devel
+BuildRequires:	vala
+BuildRequires:	xorg-lib-libX11-devel
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -55,7 +61,10 @@ rm -rf $RPM_BUILD_ROOT
 %files -f %{name}.lang
 %defattr(644,root,root,755)
 %doc AUTHORS README
+%attr(755,root,root) %{_bindir}/lxclipboard
 %attr(755,root,root) %{_bindir}/lxlock
+%attr(755,root,root) %{_bindir}/lxpolkit
 %attr(755,root,root) %{_bindir}/lxsession*
 %{_datadir}/lxsession
+%{_desktopdir}/lxsession*.desktop
 %{_mandir}/man1/lxsession*
