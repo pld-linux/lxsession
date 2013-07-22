@@ -10,7 +10,7 @@
 Summary:	Default session manager for LXDE
 Name:		lxsession
 Version:	0.4.9.2
-Release:	1
+Release:	2
 License:	GPL v2
 Group:		X11/Applications
 Source0:	http://downloads.sourceforge.net/lxde/%{name}-%{version}.tar.gz
@@ -28,6 +28,8 @@ BuildRequires:	pkgconfig
 BuildRequires:	polkit-devel
 BuildRequires:	vala
 BuildRequires:	xorg-lib-libX11-devel
+Obsoletes:	lxpolkit
+Obsoletes:	lxsession-edit
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
