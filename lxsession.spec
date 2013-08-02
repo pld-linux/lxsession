@@ -10,7 +10,7 @@
 Summary:	Default session manager for LXDE
 Name:		lxsession
 Version:	0.4.9.2
-Release:	2
+Release:	3
 License:	GPL v2
 Group:		X11/Applications
 Source0:	http://downloads.sourceforge.net/lxde/%{name}-%{version}.tar.gz
@@ -28,6 +28,8 @@ BuildRequires:	pkgconfig
 BuildRequires:	polkit-devel
 BuildRequires:	vala
 BuildRequires:	xorg-lib-libX11-devel
+Provides:	lxpolkit = 0.1.0-2
+Provides:	lxsession-edit = 0.2.0-3
 Obsoletes:	lxpolkit
 Obsoletes:	lxsession-edit
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -53,7 +55,7 @@ rm -rf $RPM_BUILD_ROOT
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT
 
-%{__rm} -r $RPM_BUILD_ROOT%{_datadir}/locale/{frp,ur_PK,tt_RU}
+%{__rm} -r $RPM_BUILD_ROOT%{_localedir}/{frp,ur_PK,tt_RU}
 
 %find_lang %{name}
 
