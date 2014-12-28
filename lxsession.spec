@@ -18,7 +18,7 @@ Source0:	http://downloads.sourceforge.net/lxde/%{name}-%{version}.tar.gz
 URL:		http://wiki.lxde.org/en/LXSession
 BuildRequires:	dbus-devel
 BuildRequires:	dbus-glib-devel
-BuildRequires:	gettext-devel
+BuildRequires:	gettext-tools
 BuildRequires:	glib2-devel
 %{?with_gtk2:BuildRequires:	gtk+2-devel >= 2:2.12.0}
 %{?with_gtk3:BuildRequires:	gtk+3-devel}
