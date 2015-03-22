@@ -10,7 +10,7 @@
 Summary:	Default session manager for LXDE
 Name:		lxsession
 Version:	0.4.9.2
-Release:	3
+Release:	4
 License:	GPL v2
 Group:		X11/Applications
 Source0:	http://downloads.sourceforge.net/lxde/%{name}-%{version}.tar.gz
