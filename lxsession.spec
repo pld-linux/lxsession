@@ -1,6 +1,6 @@
 #
 # Conditional build:
-%bcond_with	gtk3	# use GTK+3 instead of GTK+2
+%bcond_without	gtk3	# use GTK+3 instead of GTK+2
 %bcond_without	notify	# libnotify/indicators based notification
 
 Summary:	Default session manager for LXDE
