@@ -42,7 +42,7 @@ BuildRequires:	vala >= 2:0.16.0
 BuildRequires:	xorg-lib-libX11-devel
 BuildRequires:	xz
 %{!?with_gtk3:Requires:	gtk+2 >= 2:2.12.0}
-%{?with_notify:Requires:	libindicator >= 0.4.93}
+%{?with_notify:Requires:	libayatana-indicator}
 Provides:	lxpolkit = 0.1.0-2
 Provides:	lxsession-edit = 0.2.0-3
 Obsoletes:	lxpolkit < 0.1.0-2
