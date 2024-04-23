@@ -1,0 +1,246 @@
+diff -ur lxsession-0.5.5.orig/data/desktop.conf.example lxsession-0.5.5/data/desktop.conf.example
+--- lxsession-0.5.5.orig/data/desktop.conf.example	2020-02-29 16:32:45.000000000 +0100
++++ lxsession-0.5.5/data/desktop.conf.example	2024-04-23 10:04:05.100739077 +0200
+@@ -119,9 +119,6 @@
+ # Aaccessibility to enable (GNOME, KDE or other). Only GNOME supported now.
+ a11y/command = gnome
+ 
+-# Default Keyring program (default for ssh-agent, gnome-all for gnome-keyring-daemon full support)
+-keyring/command=ssh-agent
+-
+ # Command to launch for configuring Xrandr ex: xrandr --mode ...
+ xrandr/command=
+ 
+diff -ur lxsession-0.5.5.orig/data/ui/lxsession-default-apps.ui lxsession-0.5.5/data/ui/lxsession-default-apps.ui
+--- lxsession-0.5.5.orig/data/ui/lxsession-default-apps.ui	2019-02-27 23:02:03.000000000 +0100
++++ lxsession-0.5.5/data/ui/lxsession-default-apps.ui	2024-04-23 10:04:05.100739077 +0200
+@@ -4004,80 +4004,6 @@
+                               </packing>
+                             </child>
+                             <child>
+-                              <object class="GtkLabel" id="keyring_label">
+-                                <property name="visible">True</property>
+-                                <property name="can_focus">False</property>
+-                                <property name="label" translatable="yes">Security (keyring)</property>
+-                              </object>
+-                              <packing>
+-                                <property name="top_attach">15</property>
+-                                <property name="bottom_attach">16</property>
+-                              </packing>
+-                            </child>
+-                            <child>
+-                              <object class="GtkEntry" id="keyring_entry">
+-                                <property name="visible">True</property>
+-                                <property name="can_focus">True</property>
+-                                <property name="invisible_char">•</property>
+-                                <property name="invisible_char_set">True</property>
+-                                <property name="primary_icon_activatable">False</property>
+-                                <property name="secondary_icon_activatable">False</property>
+-                                <property name="primary_icon_sensitive">True</property>
+-                                <property name="secondary_icon_sensitive">True</property>
+-                              </object>
+-                              <packing>
+-                                <property name="left_attach">1</property>
+-                                <property name="right_attach">2</property>
+-                                <property name="top_attach">15</property>
+-                                <property name="bottom_attach">16</property>
+-                              </packing>
+-                            </child>
+-                            <child>
+-                              <object class="GtkButton" id="keyring_help_button">
+-                                <property name="visible">True</property>
+-                                <property name="can_focus">True</property>
+-                                <property name="receives_default">True</property>
+-                                <property name="use_action_appearance">False</property>
+-                                <property name="image">file_manager_help_image208</property>
+-                              </object>
+-                              <packing>
+-                                <property name="left_attach">2</property>
+-                                <property name="right_attach">3</property>
+-                                <property name="top_attach">15</property>
+-                                <property name="bottom_attach">16</property>
+-                              </packing>
+-                            </child>
+-                            <child>
+-                              <object class="GtkButton" id="keyring_reload">
+-                                <property name="label" translatable="yes">Reload</property>
+-                                <property name="visible">True</property>
+-                                <property name="can_focus">True</property>
+-                                <property name="receives_default">True</property>
+-                                <property name="use_action_appearance">False</property>
+-                              </object>
+-                              <packing>
+-                                <property name="left_attach">3</property>
+-                                <property name="right_attach">4</property>
+-                                <property name="top_attach">15</property>
+-                                <property name="bottom_attach">16</property>
+-                              </packing>
+-                            </child>
+-                            <child>
+-                              <object class="GtkButton" id="keyring_more">
+-                                <property name="label" translatable="yes">More</property>
+-                                <property name="visible">True</property>
+-                                <property name="can_focus">True</property>
+-                                <property name="receives_default">True</property>
+-                                <property name="use_action_appearance">False</property>
+-                              </object>
+-                              <packing>
+-                                <property name="left_attach">4</property>
+-                                <property name="right_attach">5</property>
+-                                <property name="top_attach">15</property>
+-                                <property name="bottom_attach">16</property>
+-                              </packing>
+-                            </child>
+-                            <child>
+                               <object class="GtkLabel" id="a11y_label">
+                                 <property name="visible">True</property>
+                                 <property name="can_focus">False</property>
+diff -ur lxsession-0.5.5.orig/lxsession/app.vala lxsession-0.5.5/lxsession/app.vala
+--- lxsession-0.5.5.orig/lxsession/app.vala	2019-02-27 23:02:03.000000000 +0100
++++ lxsession-0.5.5/lxsession/app.vala	2024-04-23 10:04:05.100739077 +0200
+@@ -1080,44 +1080,6 @@
+     }
+ }
+ 
+-public class KeyringApp: SimpleAppObject
+-{
+-    string keyring_command;
+-    string keyring_type;
+-
+-    public KeyringApp ()
+-    {
+-        init();
+-    }
+-
+-    public override void read_settings()
+-    {
+-        keyring_command = global_settings.get_item_string("Session", "keyring", "command");
+-        keyring_type = global_settings.get_item_string("Session", "keyring", "type");
+-
+-        switch (keyring_command)
+-        {
+-            case "gnome-all":
+-                string tmp_command = "gnome-keyring-daemon --start --components=pkcs11,secrets,ssh,gpg";
+-                string[] create_command = tmp_command.split_set(" ",0);
+-                this.name = create_command[0];
+-                this.command = create_command;
+-                break;
+-            case "ssh-agent":
+-                string tmp_command = "/usr/bin/ssh-agent -s";
+-                string[] create_command = tmp_command.split_set(" ",0);
+-                this.name = create_command[0];
+-                this.command = create_command;
+-                break;
+-            default:
+-                string[] create_command = keyring_command.split_set(" ",0);
+-                this.name = create_command[0];
+-                this.command = create_command;
+-                break;
+-        }
+-    }
+-}
+-
+ public class ScreenshotManagerApp: SimpleAppObject
+ {
+     string screenshotmanager_command;
+diff -ur lxsession-0.5.5.orig/lxsession/dbus-lxde-session.vala lxsession-0.5.5/lxsession/dbus-lxde-session.vala
+--- lxsession-0.5.5.orig/lxsession/dbus-lxde-session.vala	2019-02-27 23:02:03.000000000 +0100
++++ lxsession-0.5.5/lxsession/dbus-lxde-session.vala	2024-04-23 10:04:05.104739129 +0200
+@@ -421,10 +421,6 @@
+                         XrandrActivate();
+                         break;
+ 
+-                    case "keyring":
+-                        KeyringActivate();
+-                        break;
+-
+                     case "updates_manager":
+                         if (option == "check")
+                         {
+@@ -607,27 +603,6 @@
+             }
+         }
+ 
+-        public void KeyringActivate()
+-        {
+-            message("Reload security");
+-            if (global_settings.get_item_string("Session", "xrandr", "command") == null)
+-            {
+-                warning("Security keyring not set");
+-            }
+-            else if (global_keyring == null)
+-            {
+-                message("Keyring doesn't exist, creating it");
+-                var keyring = new KeyringApp();
+-                global_keyring = keyring;
+-                global_keyring.launch();
+-            }
+-            else
+-            {
+-                message("Reload existing keyring");
+-                global_keyring.reload();
+-            }
+-        }
+-
+         public void XrandrActivate()
+         {
+             message("Reload xrandr");
+diff -ur lxsession-0.5.5.orig/lxsession/main.vala lxsession-0.5.5/lxsession/main.vala
+--- lxsession-0.5.5.orig/lxsession/main.vala	2020-02-29 15:53:10.000000000 +0100
++++ lxsession-0.5.5/lxsession/main.vala	2024-04-23 10:04:05.104739129 +0200
+@@ -52,7 +52,6 @@
+     KeymapOption global_keymap;
+     GenericSimpleApp global_im_manager;
+     XrandrApp global_xrandr;
+-    KeyringApp global_keyring;
+     A11yApp global_a11y;
+     UpdatesManagerApp global_updates;
+     CrashManagerApp global_crash;
+@@ -456,13 +455,6 @@
+             xrandr.launch();
+         }
+ 
+-        if (global_settings.get_item_string("Session", "keyring", "command") != null)
+-        {
+-            var keyring = new KeyringApp();
+-            global_keyring = keyring;
+-            global_keyring.launch();
+-        }
+-
+         if (global_settings.get_item_string("Session", "a11y", "command") != null)
+         {
+             var a11y = new A11yApp();
+diff -ur lxsession-0.5.5.orig/lxsession/settings.vala lxsession-0.5.5/lxsession/settings.vala
+--- lxsession-0.5.5.orig/lxsession/settings.vala	2020-02-29 16:32:22.000000000 +0100
++++ lxsession-0.5.5/lxsession/settings.vala	2024-04-23 10:04:05.104739129 +0200
+@@ -269,7 +269,6 @@
+             set_generic_default("Session", "clipboard", "command", "string", "lxclipboard");
+             set_generic_default("Session", "xsettings_manager", "command", "string", "build-in");
+             set_generic_default("Session", "proxy_manager", "command", "string", "build-in");
+-            set_generic_default("Session", "keyring", "command", "string", "ssh-agent");
+ 
+             /* Set Xsettings default */
+ 
+@@ -799,7 +798,6 @@
+         read_key_value(kf, "Session", "proxy_manager", "command", "string");
+         read_key_value(kf, "Session", "proxy_manager", "http", "string");
+         read_key_value(kf, "Session", "a11y", "command", "string");
+-        read_key_value(kf, "Session", "keyring", "command", "string");
+         read_key_value(kf, "Session", "xrandr", "command", "string");
+         read_key_value(kf, "Session", "network_gui", "command", "string");
+ 
+diff -ur lxsession-0.5.5.orig/lxsession-default-apps/main.vala lxsession-0.5.5/lxsession-default-apps/main.vala
+--- lxsession-0.5.5.orig/lxsession-default-apps/main.vala	2020-02-29 15:15:41.000000000 +0100
++++ lxsession-0.5.5/lxsession-default-apps/main.vala	2024-04-23 10:04:05.104739129 +0200
+@@ -365,11 +365,6 @@
+             string clipboard_more_help_message = manual_setting_help;
+             init_application(builder, kf, dbus_backend, "clipboard", "", clipboard_help_message, clipboard_more, clipboard_more_help_message, null);
+ 
+-            string security_help_message = _("Managing keyring support.\nStandard options available \"gnome\" for gnome-keyring support  or \"ssh-agent\" for ssh-agent support");
+-            string[] security_more = {""};
+-            string security_more_help_message = manual_setting_help;
+-            init_application(builder, kf, dbus_backend, "keyring", "", security_help_message, security_more, security_more_help_message, null);
+-
+             string a11y_help_message = _("Managing support for accessibility.\nStardart option are gnome, for stardart gnome support.");
+             string[] a11y_more = {""};
+             string a11y_more_help_message = manual_setting_help;
