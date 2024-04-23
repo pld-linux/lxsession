@@ -7,11 +7,12 @@ Summary:	Default session manager for LXDE
 Summary(pl.UTF-8):	Domyślny zarząda sesji dla LXDE
 Name:		lxsession
 Version:	0.5.5
-Release:	1
+Release:	2
 License:	GPL v2+
 Group:		X11/Applications
 Source0:	https://downloads.sourceforge.net/lxde/%{name}-%{version}.tar.xz
 # Source0-md5:	e8380acef215ee7c99c067a2241c2c7b
+Patch0:		libayatana.patch
 URL:		http://www.lxde.org/
 BuildRequires:	dbus-devel
 BuildRequires:	dbus-glib-devel
@@ -22,14 +23,21 @@ BuildRequires:	glib2-devel >= 1:2.28.0
 %{!?with_gtk3:BuildRequires:	gtk+2-devel >= 2:2.12.0}
 %{?with_gtk3:BuildRequires:	gtk+3-devel >= 3.0.0}
 BuildRequires:	intltool >= 0.40.0
-%{?with_notify:BuildRequires:	libappindicator-gtk2-devel >= 0.1}
-%{?with_notify:BuildRequires:	libindicator-devel >= 0.4.93}
-%{?with_notify:BuildRequires:	libnotify-devel}
+%if %{with notify}
+%{!?with_gtk3:BuildRequires:	libayatana-appindicator-gtk2-devel}
+%{?with_gtk3:BuildRequires:	libayatana-appindicator-gtk3-devel}
+BuildRequires:	libayatana-indicator-devel
+BuildRequires:	libnotify-devel
+%endif
 BuildRequires:	libxslt-progs
 BuildRequires:	pkgconfig
 BuildRequires:	polkit-devel
 BuildRequires:	tar >= 1:1.22
 BuildRequires:	vala >= 2:0.16.0
+%if %{with notify}
+%{!?with_gtk3:BuildRequires:	vala-libayatana-appindicator-gtk2}
+%{?with_gtk3:BuildRequires:	vala-libayatana-appindicator-gtk3}
+%endif
 BuildRequires:	xorg-lib-libX11-devel
 BuildRequires:	xz
 %{!?with_gtk3:Requires:	gtk+2 >= 2:2.12.0}
@@ -58,12 +66,19 @@ uruchomić je ponownie przy kolejnym zalogowaniu tego użytkownika.
 
 %prep
 %setup -q
+%patch0 -p1
 
 %build
+%{__libtoolize}
+%{__aclocal} -I m4
+%{__autoconf}
+%{__automake}
 %configure \
 	%{?with_notify:--enable-advanced-notifications} \
 	%{?with_gtk3:--enable-gtk3} \
 	--disable-silent-rules
+# Delete bundled .c files to force regeneration using valac
+%{__make} clean-generic
 %{__make}
 
 %install

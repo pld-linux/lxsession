@@ -1,0 +1,34 @@
+diff -ur lxsession-0.5.5.orig/configure.ac lxsession-0.5.5/configure.ac
+--- lxsession-0.5.5.orig/configure.ac	2020-02-29 17:29:36.000000000 +0100
++++ lxsession-0.5.5/configure.ac	2024-04-23 02:02:29.782055165 +0200
+@@ -117,7 +117,11 @@
+ AM_CONDITIONAL(USE_ADVANCED_NOTIFICATIONS, test "$use_advanced_notifications" = "yes")
+ 
+ if test "$use_advanced_notifications" = "yes"; then
+-  PKG_CHECK_MODULES(INDICATORS, [indicator-0.4 >= 0.4.93 appindicator-0.1])
++  if test "$enable_gtk3" = "yes"; then
++    PKG_CHECK_MODULES(INDICATORS, [ayatana-indicator-0.4 ayatana-appindicator3-0.1])
++  else
++    PKG_CHECK_MODULES(INDICATORS, [ayatana-indicator-0.4 ayatana-appindicator-0.1])
++  fi
+   AC_SUBST(INDICATORS_CFLAGS)
+   AC_SUBST(INDICATORS_LIBS)
+ 
+diff -ur lxsession-0.5.5.orig/Makefile.am lxsession-0.5.5/Makefile.am
+--- lxsession-0.5.5.orig/Makefile.am	2020-02-29 15:15:59.000000000 +0100
++++ lxsession-0.5.5/Makefile.am	2024-04-23 01:59:56.536039201 +0200
+@@ -459,8 +459,13 @@
+     $(GTK_LIBS)
+ 
+ if USE_ADVANCED_NOTIFICATIONS
++if USE_GTK3
++GTKVER=3
++else
++GTKVER=
++endif
+ lxsession_lxsession_VALAFLAGS +=     \
+-    --pkg appindicator-0.1 \
++    --pkg ayatana-appindicator$(GTKVER)-0.1 \
+     --pkg libnotify \
+     -D USE_ADVANCED_NOTIFICATIONS
+ 
