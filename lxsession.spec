@@ -1,19 +1,20 @@
 #
 # Conditional build:
 %bcond_without	gtk3	# use GTK+3 instead of GTK+2
-%bcond_without	notify	# libnotify/indicators based notification
+%bcond_with	notify	# libnotify/indicators based notification
 
 Summary:	Default session manager for LXDE
 Summary(pl.UTF-8):	Domyślny zarząda sesji dla LXDE
 Name:		lxsession
 Version:	0.5.5
-Release:	3
+Release:	4
 License:	GPL v2+
 Group:		X11/Applications
 Source0:	https://downloads.sourceforge.net/lxde/%{name}-%{version}.tar.xz
 # Source0-md5:	e8380acef215ee7c99c067a2241c2c7b
 Patch0:		libayatana.patch
 Patch1:		no-keyring.patch
+Patch2:		no-dpkg.patch
 URL:		http://www.lxde.org/
 BuildRequires:	dbus-devel
 BuildRequires:	dbus-glib-devel
@@ -69,6 +70,7 @@ uruchomić je ponownie przy kolejnym zalogowaniu tego użytkownika.
 %setup -q
 %patch0 -p1
 %patch1 -p1
+%patch2 -p1
 
 %build
 %{__libtoolize}
