@@ -7,7 +7,7 @@ Summary:	Default session manager for LXDE
 Summary(pl.UTF-8):	Domyślny zarząda sesji dla LXDE
 Name:		lxsession
 Version:	0.5.5
-Release:	4
+Release:	5
 License:	GPL v2+
 Group:		X11/Applications
 Source0:	https://downloads.sourceforge.net/lxde/%{name}-%{version}.tar.xz
@@ -15,6 +15,7 @@ Source0:	https://downloads.sourceforge.net/lxde/%{name}-%{version}.tar.xz
 Patch0:		libayatana.patch
 Patch1:		no-keyring.patch
 Patch2:		no-dpkg.patch
+Patch3:		gcc14-incompatible-pointer-types.patch
 URL:		http://www.lxde.org/
 BuildRequires:	dbus-devel
 BuildRequires:	dbus-glib-devel
@@ -71,6 +72,7 @@ uruchomić je ponownie przy kolejnym zalogowaniu tego użytkownika.
 %patch0 -p1
 %patch1 -p1
 %patch2 -p1
+%patch3 -p1
 
 %build
 %{__libtoolize}
