@@ -7,7 +7,7 @@ Summary:	Default session manager for LXDE
 Summary(pl.UTF-8):	Domyślny zarząda sesji dla LXDE
 Name:		lxsession
 Version:	0.5.5
-Release:	5
+Release:	6
 License:	GPL v2+
 Group:		X11/Applications
 Source0:	https://downloads.sourceforge.net/lxde/%{name}-%{version}.tar.xz
@@ -32,6 +32,7 @@ BuildRequires:	intltool >= 0.40.0
 BuildRequires:	libayatana-indicator-devel
 BuildRequires:	libnotify-devel
 %endif
+BuildRequires:	libtool
 BuildRequires:	libxslt-progs
 BuildRequires:	pkgconfig
 BuildRequires:	polkit-devel
